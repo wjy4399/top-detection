@@ -1,0 +1,46 @@
+model_height:
+  model_name: Unet 
+  encoder_name: resnet34
+  encoder_depth: 5 
+  encoder_weights: "imagenet"  
+  model_roof_checkpoint: "/root/autodl-fs/checkpoints/segmentator_manet-mit_b5_augs-train_medium-val_none_loss-jaccard_height9_tta-true_512-bs8/last-v1.ckpt"  
+  channels: 3 
+
+training: 
+  lr: 0.0001
+  epochs: 100
+  set_height_to: 9.0
+  cache_dir: '/root/autodl-fs/cache'
+  save_logs_dir: 'logs'
+  save_weights_dir: '/root/autodl-fs/checkpoints/height'
+  save_results_dir: 'test_results/height'
+  save_temp_val_results_dir: '/root/autodl-fs/val/temp_val_results'
+  save_temp_train_results_dir: '/root/autodl-fs/train/temp_train_results'
+  train_labels_dir: '/root/autodl-fs/train/labels'
+  val_labels_dir: '/root/autodl-fs/val/labels'
+  train_labels_dir_gt: '/root/autodl-fs/train/labels_temp'
+  val_labels_dir_gt: '/root/autodl-fs/val/labels_temp'
+  wandb_project_name: 'top-detection'
+  wandb_run_name: 'segmentator_manet-mit_b5_augs-train_medium-val_none_loss-jaccard_height9_tta-true_512-bs8'
+  target_mode: "tc" 
+  
+prediction:
+  mask_threshold: 0.5
+  max_vertices: 8
+  epsilon: 0.001
+
+data:
+  image_path: '/root/autodl-fs/mlc_training_data/images'
+  label_path: '/root/autodl-fs/mlc_training_data/ground_truth_files'
+  test_data_path: '/root/autodl-fs/mlc_test_images'
+  image_w: 512
+  image_h: 512
+  original_image_size: 512
+  train_size: 0.8
+  batch_size: 8
+  train_augs: 'medium'
+  val_augs: 'none'
+  tta: false
+
+loss:
+  type: "MSE"  # 使用的损失函数类型
